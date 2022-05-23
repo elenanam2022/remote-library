@@ -11,15 +11,13 @@ function GovResource(){
         if (localStorage.getItem("lng") !== null){
             strings.setLanguage(localStorage.getItem("lng"))
           }
-        fetch(`http://10.129.0.217:8000/governmental-resource/${id}`, {
+        fetch(`http://${process.env.REACT_APP_IP_ADDRESS}:8000/governmental-resource/${id}`, {
           method: 'GET'
     
         }).then( resp => resp.json())
         .then(response => {
             console.log(response)
-            let path = response.path.split("public")[1]
-            setGovResource(response)
-            path = '../..' + path
+            let path = response.path
             setPath(path)
         })
         .catch (error => console.log(error))
@@ -29,7 +27,7 @@ function GovResource(){
       <div>
         {path!==""&&
         <div>
-        <iframe className="website" src={process.env.PUBLIC_URL + path}></iframe>
+        <iframe className="website" src={path}></iframe>
         </div>
         }
         

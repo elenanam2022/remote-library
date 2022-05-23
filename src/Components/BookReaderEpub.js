@@ -19,6 +19,7 @@ const loc = null;
 export default function ReactReaderEpub() {
     const loc = useLocation()
     const path = loc.state.path
+    console.log("path:", path)
   const [selections, setSelections] = useState([]);
   const renditionRef = useRef(null);
 
@@ -27,6 +28,7 @@ export default function ReactReaderEpub() {
     // epubcifi is a internal string used by epubjs to point to a location in an epub. It looks like this: epubcfi(/6/6[titlepage]!/4/2/12[pgepubid00003]/3:0)
     setLocation(epubcifi);
     console.log(location);
+    localStorage.setItem("bookepub+"+path, epubcifi)
   };
 
   // setSelections([
@@ -38,6 +40,10 @@ export default function ReactReaderEpub() {
   // ]);
 
   useEffect(() => {
+    if (renditionRef.current){
+      let lock = localStorage.getItem("bookepub+"+path)
+      setLocation(lock)
+    }
     if (renditionRef.current) {
       function setRenderSelection(cfiRange, contents) {
         setSelections(
@@ -71,7 +77,7 @@ export default function ReactReaderEpub() {
         <ReactReader
           location={location}
           locationChanged={locationChanged}
-          url={process.env.PUBLIC_URL + path}
+          url={path}
           styles={ownStyles}
           getRendition={(rendition) => {
             renditionRef.current = rendition;

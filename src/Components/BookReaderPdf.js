@@ -17,12 +17,22 @@ function BookReaderPdf(){
         if (localStorage.getItem("lng") !== null){
             strings.setLanguage(localStorage.getItem("lng"))
           }
-    })
+         
+
+          let page = localStorage.getItem("page_pdf"+name);
+        if (page !== null){
+            setPageNumber(parseInt(page))
+        }
+          
+    }, [])
     pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
       function onDocumentLoadSuccess({ numPages }) {
         setNumPages(numPages);
-        setPageNumber(1);
-        setDisplayPages([2,3,4,5,6,7,8,9,numPages])
+        
+        setPageNumber(pageNumber);
+        // setDisplayPages([2,3,4,5,6,7,8,9,numPages])
+        handlePagesList(pageNumber, numPages)
+        
       }
     function handlePageChange(){
         if (pageNumberInput > 0 && pageNumberInput<=numPages){
@@ -34,15 +44,20 @@ function BookReaderPdf(){
     function handleButtonNavigation(num){
         if (num > 0 && num<=numPages){
             setPageNumber(num)
+            localStorage.setItem("page_pdf"+name, num)
         }
         handlePagesList(num)
     }
-    function handlePagesList(num){
+    function handlePagesList(num, max){
+        let maxPage = numPages;
+        if (max !== null){
+            maxPage = max;
+        }
         let new_pages = []
         if (num <= 1){
-            setDisplayPages([2,3,4,5,6,7,8,9,numPages])
+            setDisplayPages([2,3,4,5,6,7,8,9,maxPage])
         }
-        else if (num !== 1 &&  num<numPages-7){
+        else if (num !== 1 &&  num<maxPage-7){
             for (let i = num; i<num+8; i++){
                 if (i === num){
                     new_pages.push(i-1)
@@ -51,7 +66,7 @@ function BookReaderPdf(){
                 }
                 
             }
-            new_pages.push(numPages)
+            new_pages.push(maxPage)
             setDisplayPages(new_pages);
 
         }else if(num>=numPages-7){
@@ -77,6 +92,7 @@ function BookReaderPdf(){
         if (pageNumber < numPages){
             e.preventDefault()
             setPageNumber(pageNumber+1)
+            localStorage.setItem("page_pdf"+name, pageNumber+1)
         }
         handlePagesList(pageNumber+1)
         
@@ -85,6 +101,7 @@ function BookReaderPdf(){
         if (pageNumber > 1){
             e.preventDefault()
             setPageNumber(pageNumber - 1)
+            localStorage.setItem("page_pdf"+name, pageNumber+1)
         }
         handlePagesList(pageNumber - 1)
     }

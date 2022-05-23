@@ -50,6 +50,7 @@ input[type=text]{
   height: 50px;
   background: rgba(252, 252, 252, 0.63);
   mix-blend-mode: darken;
+  max-width: 900px;
   /* Fuschia/60 */
 
   border: 1px solid #FCDDEC;
@@ -70,6 +71,25 @@ input[type=text]{
   font-weight: 700;
   font-size: 22px;
 }
+.searchContainer{
+  position: absolute;
+  z-index: 20;
+  background: #FFFCFC;
+  border-radius: 20px;
+  width: 50vw;
+  max-width: 900px;
+}
+.searchContainer .searchMaterial{
+  display: flex;
+  align-items: center;
+  height: 50px;
+  font-family: 'Exo 2';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 20px;
+  line-height: 24px;
+  padding-left: 60px;
+}
 @media only screen and (max-width: 1111px){
   .header-input-web{
     display: none;
@@ -79,6 +99,14 @@ input[type=text]{
   }
   .header-input-phone input[type=text]{
     width: 100%;
+    max-width: 100%;
+  }
+  .searchContainer{
+    width: 100%;
+    max-width: 100%;
+  }
+  .searchContainer .searchMaterial{
+    font-size: 17px;
   }
   img.logo_img{
     height: 58px;

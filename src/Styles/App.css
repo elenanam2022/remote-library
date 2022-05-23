@@ -2,6 +2,11 @@
   margin: 0 auto;
   overflow-x: hidden;
   font-family: sans-serif;
+  padding-bottom: 30px;
+  max-width: 1440px;
+}
+header.App-header{
+  max-width: 1440px;
 }
 @media only screen and (max-width: 1111px){
   .App{

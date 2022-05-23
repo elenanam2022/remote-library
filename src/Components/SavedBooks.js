@@ -1,10 +1,10 @@
 import React, {useState, useEffect} from 'react';
 import { Document, Page,pdfjs,  StyleSheet } from 'react-pdf';
 import {Link} from 'react-router-dom'
-import {strings} from '../localization'
+import { strings } from '../localization';
 
 
-function Books(){
+function SavedBooks(){
     const [numPages, setNumPages] = useState(null);
     const [pageNumber, setPageNumber] = useState(1);
     const [books, setBooks] = useState([]);
@@ -13,10 +13,14 @@ function Books(){
       if (localStorage.getItem("lng") !== null){
         strings.setLanguage(localStorage.getItem("lng"))
       }
-        fetch(`http://${process.env.REACT_APP_IP_ADDRESS}:8000/books-popular`, {
-          method: 'GET'
+      const requestOptions = {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({refresh: localStorage.getItem("refresh")})
+    };
     
-        }).then( resp => resp.json())
+        fetch(`http://${process.env.REACT_APP_IP_ADDRESS}:8000/get-saved-books`, requestOptions)
+        .then( resp => resp.json())
         .then(response => setBooks(response))
         .catch (error => console.log(error))
         
@@ -28,12 +32,11 @@ function Books(){
     
     return(
       <div>
-        <h2 className='popularTitle'>{strings.popularText}</h2>
-      <h2 className="bookHeader">{strings.bookBestSellers}</h2>
-        <div className = "book-wrapper">
+      <h2 className="bookHeader">{strings.booksText}</h2>
+        <div className = "book-wrapper book-directory">
         
         { books.map(book=> {
-          let path = book.path
+          let path = book.path  
           let authors = "";
           book.authors.map((author, id)=>
           authors += author.first_name + " " + author.last_name)
@@ -70,4 +73,4 @@ function Books(){
         </div>
     )}
 
-export default Books;
+export default SavedBooks;

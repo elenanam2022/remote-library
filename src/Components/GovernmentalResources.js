@@ -9,7 +9,7 @@ function GovernmentalResources(){
         if (localStorage.getItem("lng") !== null){
             strings.setLanguage(localStorage.getItem("lng"))
           }
-        fetch("http://10.129.0.217:8000/governmental-resource-popular", {
+        fetch(`http://${process.env.REACT_APP_IP_ADDRESS}:8000/governmental-resource-popular`, {
           method: 'GET'
     
         }).then( resp => resp.json())
@@ -23,17 +23,24 @@ function GovernmentalResources(){
         <div className = "book-wrapper">
         
         { govResources.map(govResources=> {
-          let path = govResources.path.split("governmental_resources")[1].split(".html")[0].substring(1)
+          let path = govResources.path
             return (
                 <Link to={`gov-resource/${govResources.id}`}>
               <div key={govResources.id} className = "item">
-                <div>{path}</div>
+                <div>{govResources.source}</div>
            </div>
            </Link>
             )
            
           })}
         </div>
+        <div className='footer'>
+                    <Link to='/about'>
+                      <p>
+                      {strings.aboutUsTitle}
+                      </p>
+                      </Link>
+                </div>
         </div>
     )}
 
